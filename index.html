@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa para Desarrolladores MERN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8;
+            color: #1A202C;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .nav-link.active {
+            background-color: #E6FFFA;
+            border-left-color: #2C7A7B;
+            color: #2C7A7B;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            background-color: #F0F4F8;
+            border-left-color: #4FD1C5;
+        }
+        .tab-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .tab-btn.active {
+            border-color: #2C7A7B;
+            background-color: #2C7A7B;
+            color: white;
+        }
+        .code-block {
+            position: relative;
+            background-color: #1A202C;
+            color: #E2E8F0;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4A5568;
+            color: #E2E8F0;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover { background-color: #718096; }
+        .prose h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2C7A7B;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #E6FFFA;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2D3748;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose p, .prose ul, .prose li {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        .prose a {
+            color: #2C7A7B;
+            text-decoration: underline;
+        }
+        .prose strong {
+            color: #2D3748;
+        }
+        .prose code {
+            background-color: #E2E8F0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            color: #2D3748;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        #interactive-diagram .diagram-box {
+            border: 2px solid #CBD5E0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        #interactive-diagram .diagram-box:hover {
+            border-color: #2C7A7B;
+            background-color: #E6FFFA;
+        }
+        .tooltip {
+            visibility: hidden;
+            background-color: #2D3748;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 200px;
+            font-size: 0.8rem;
+        }
+        #interactive-diagram .diagram-box:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="flex h-screen">
+
+<aside class="w-64 bg-white shadow-md flex-shrink-0 overflow-y-auto">
+    <div class="p-6">
+        <h1 class="text-2xl font-bold text-gray-800">Ruta MERN</h1>
+        <p class="text-sm text-gray-500">De Cero a Héroe</p>
+    </div>
+    <nav class="mt-6">
+        <a href="#introduccion" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">🚀</span> Introducción
+        </a>
+        <a href="#fundamentos" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">🧱</span> Fase 1: Fundamentos
+        </a>
+        <a href="#backend" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">⚙️</span> Fase 2: Backend
+        </a>
+        <a href="#mongodb" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">🗃️</span> Fase 3: Base de Datos
+        </a>
+        <a href="#frontend" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">🎨</span> Fase 4: Frontend
+        </a>
+        <a href="#integracion" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">🧩</span> Fase 5: Integración
+        </a>
+        <a href="#ciberseguridad" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">🛡️</span> Fase 6: Ciberseguridad
+        </a>
+        <a href="#despliegue" class="nav-link flex items-center px-6 py-3 text-gray-600">
+            <span class="w-6 h-6 mr-3">☁️</span> Fase 7: Despliegue
+        </a>
+    </nav>
+</aside>
+
+<main class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-white shadow-sm p-4">
+        <h2 id="main-title" class="text-xl font-semibold text-gray-700">Bienvenido a la Guía Interactiva MERN</h2>
+    </header>
+    <div class="flex-1 overflow-y-auto p-8 prose max-w-none">
+
+        <!-- INTRODUCCIÓN -->
+        <section id="introduccion" class="content-section active">
+            <h2>🚀 Introducción al Stack MERN</h2>
+            <p>Bienvenido a esta guía completa para convertirte en un desarrollador Full Stack con el stack MERN. MERN es un acrónimo de las cuatro tecnologías clave que componen este conjunto: <strong>MongoDB, Express.js, React y Node.js</strong>. Juntas, proporcionan un marco de trabajo de extremo a extremo para construir aplicaciones web modernas, escalables y de alto rendimiento, utilizando JavaScript en todo el proceso.</p>
+
+            <h3>¿Por qué elegir MERN?</h3>
+            <ul>
+                <li><strong>JavaScript en todo:</strong> Utilizar un solo lenguaje (JavaScript) tanto en el frontend como en el backend simplifica el desarrollo, reduce la curva de aprendizaje y permite una mejor reutilización de código y recursos entre el equipo.</li>
+                <li><strong>Alto rendimiento:</strong> Node.js es conocido por su arquitectura asíncrona y no bloqueante, lo que lo hace ideal para aplicaciones que manejan muchas conexiones simultáneas.</li>
+                <li><strong>Flexibilidad de base de datos:</strong> MongoDB es una base de datos NoSQL orientada a documentos, lo que permite almacenar datos en formato JSON flexible (llamado BSON). Esto facilita la evolución del esquema de datos a medida que la aplicación crece.</li>
+                <li><strong>UI modernas y reactivas:</strong> React es una de las bibliotecas de JavaScript más populares para construir interfaces de usuario interactivas y dinámicas, basadas en componentes reutilizables.</li>
+                <li><strong>Comunidad y ecosistema:</strong> Cada una de estas tecnologías cuenta con una comunidad masiva y activa, lo que se traduce en una gran cantidad de tutoriales, librerías, herramientas y soporte gratuito.</li>
+            </ul>
+
+            <h3>Arquitectura de una Aplicación MERN</h3>
+            <p>Para entender cómo funcionan juntas estas tecnologías, explora el siguiente diagrama interactivo. Pasa el cursor sobre cada componente para ver su rol en el ciclo de una solicitud web.</p>
+
+            <div id="interactive-diagram" class="my-8 p-6 bg-gray-50 rounded-lg">
+                <div class="text-center font-bold text-lg mb-6">Ciclo de una Solicitud</div>
+                <div class="flex items-center justify-center mb-2">
+                    <div class="diagram-box p-4 rounded-lg w-48 text-center bg-white shadow">
+                        <h4 class="font-bold">🌐 Usuario (Navegador)</h4>
+                        <div class="tooltip">El usuario interactúa con la aplicación a través de su navegador web.</div>
+                    </div>
+                </div>
+                <div class="text-center text-3xl">↕️</div>
+                <div class="grid grid-cols-3 gap-4 items-start">
+                    <div class="diagram-box p-4 rounded-lg text-center bg-white shadow">
+                        <h4 class="font-bold">🎨 React.js (Frontend)</h4>
+                        <div class="tooltip">Renderiza la interfaz de usuario en el navegador. Envía solicitudes HTTP (ej. a través de fetch o axios) al backend para obtener o enviar datos.</div>
+                    </div>
+                    <div class="text-center text-3xl pt-2">↔️</div>
+                    <div class="diagram-box p-4 rounded-lg text-center bg-white shadow">
+                        <h4 class="font-bold">⚙️ Node.js + Express.js (Backend)</h4>
+                        <div class="tooltip">El servidor, construido con Node.js, utiliza el framework Express.js para gestionar las rutas de la API, procesar las solicitudes del cliente y comunicarse con la base de datos.</div>
+                    </div>
+                </div>
+                <div class="text-center text-3xl transform -translate-y-4">↕️</div>
+                <div class="flex items-center justify-center">
+                    <div class="diagram-box p-4 rounded-lg w-48 text-center bg-white shadow">
+                        <h4 class="font-bold">🗃️ MongoDB (Base de Datos)</h4>
+                        <div class="tooltip">Almacena los datos de la aplicación en formato BSON. El backend se conecta a MongoDB (usando un driver como Mongoose) para realizar operaciones CRUD.</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>Esta guía está estructurada en fases progresivas. Te recomendamos seguirlas en orden para construir una base de conocimiento sólida. ¡Comencemos el viaje!</p>
+        </section>
+
+        <!-- FUNDAMENTOS -->
+        <section id="fundamentos" class="content-section">
+            <h2>🧱 Fase 1: Fundamentos del Desarrollo Web</h2>
+            <p>Antes de sumergirnos en el stack MERN, es crucial tener una base sólida en las tecnologías fundamentales de la web. Si ya tienes experiencia con estos temas, puedes usarlos como un repaso. Si eres nuevo, dedícale tiempo a cada uno de ellos, ya que son la base sobre la que construirás todo lo demás.</p>
+
+            <h3>HTML5 (HyperText Markup Language)</h3>
+            <p>HTML es el esqueleto de cualquier página web. Define la estructura y el contenido semántico. No necesitas ser un experto, pero debes dominar:</p>
+            <ul>
+                <li><strong>Estructura básica:</strong> <code>&lt;!DOCTYPE&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, y <code>&lt;body&gt;</code>.</li>
+                <li><strong>Etiquetas semánticas:</strong> <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;footer&gt;</code>. Usarlas correctamente mejora el SEO y la accesibilidad.</li>
+                <li><strong>Formularios:</strong> <code>&lt;form&gt;</code>, <code>&lt;input&gt;</code> (con sus diferentes tipos: text, password, email, number, checkbox, radio), <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code>, <code>&lt;label&gt;</code>.</li>
+                <li><strong>Listas, tablas y enlaces:</strong> <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;table&gt;</code>, <code>&lt;a&gt;</code>.</li>
+            </ul>
+            <p><strong>Recurso gratuito recomendado:</strong> <a href="https://developer.mozilla.org/es/docs/Web/HTML" target="_blank">MDN Web Docs - HTML</a>.</p>
+
+            <h3>CSS3 (Cascading Style Sheets)</h3>
+            <p>CSS es el lenguaje que usamos para dar estilo y diseñar el HTML. Hace que las aplicaciones se vean bien y sean responsivas.</p>
+            <ul>
+                <li><strong>Selectores:</strong> Entender cómo seleccionar elementos por etiqueta, clase, ID, atributos y pseudo-clases.</li>
+                <li><strong>Modelo de caja (Box Model):</strong> Entender <code>margin</code>, <code>border</code>, <code>padding</code>, y <code>content</code> es fundamental.</li>
+                <li><strong>Flexbox y Grid:</strong> Son los sistemas modernos para crear layouts complejos y responsivos. Domina ambos.</li>
+                <li><strong>Diseño Responsivo:</strong> Uso de Media Queries para adaptar el diseño a diferentes tamaños de pantalla (móvil, tablet, escritorio).</li>
+                <li><strong>Conceptos básicos:</strong> Colores, fuentes, posicionamiento (static, relative, absolute, fixed, sticky), especificidad.</li>
+            </ul>
+            <p><strong>Recurso gratuito recomendado:</strong> <a href="https://www.freecodecamp.org/learn/responsive-web-design/" target="_blank">freeCodeCamp - Responsive Web Design</a>.</p>
+
+            <h3>JavaScript (ECMAScript 6+)</h3>
+            <p>Este es el lenguaje de programación que da vida a tus aplicaciones. Es el corazón del stack MERN. Dedica la mayor parte de tu tiempo aquí.</p>
+            <ul>
+                <li><strong>Fundamentos:</strong> Variables (<code>var</code>, <code>let</code>, <code>const</code>), tipos de datos, operadores, estructuras de control (if/else, switch, bucles).</li>
+                <li><strong>Funciones:</strong> Declaración, expresiones, funciones de flecha (arrow functions).</li>
+                <li><strong>Arrays y Objetos:</strong> Métodos de arrays (<code>map</code>, <code>filter</code>, <code>reduce</code>, <code>forEach</code>), desestructuración de objetos y arrays.</li>
+                <li><strong>Programación Asíncrona:</strong> El concepto más importante para Node.js. Entiende Callbacks, Promesas (<code>.then()</code>, <code>.catch()</code>) y, especialmente, <strong>Async/Await</strong>.</li>
+                <li><strong>DOM (Document Object Model):</strong> Cómo seleccionar y manipular elementos HTML con JavaScript.</li>
+                <li><strong>Módulos ES6:</strong> <code>import</code> y <code>export</code> para organizar tu código.</li>
+            </ul>
+            <p><strong>Recurso gratuito recomendado:</strong> <a href="https://javascript.info/" target="_blank">The Modern JavaScript Tutorial</a>.</p>
+
+            <h3>Control de Versiones con Git y GitHub</h3>
+            <p>Git es una herramienta indispensable para cualquier desarrollador. Te permite llevar un registro de los cambios en tu código, colaborar con otros y volver a versiones anteriores si algo sale mal. GitHub es una plataforma para alojar tus repositorios de Git.</p>
+            <ul>
+                <li><strong>Comandos básicos:</strong> <code>git init</code>, <code>git add</code>, <code>git commit</code>, <code>git status</code>, <code>git push</code>, <code>git pull</code>, <code>git clone</code>.</li>
+                <li><strong>Ramas (Branching):</strong> Crear y fusionar ramas (<code>git branch</code>, <code>git checkout</code>, <code>git merge</code>). Es el flujo de trabajo estándar en equipos.</li>
+                <li><strong>GitHub Flow:</strong> Entender el proceso de crear un repositorio, clonarlo, hacer cambios en una rama, abrir un Pull Request y fusionarlo.</li>
+            </ul>
+            <p><strong>Recurso gratuito recomendado:</strong> <a href="https://git-scm.com/book/es/v2" target="_blank">Pro Git (libro oficial)</a>.</p>
+        </section>
+
+        <!-- BACKEND -->
+        <section id="backend" class="content-section">
+            <h2>⚙️ Fase 2: Backend con Node.js y Express.js</h2>
+            <p>Una vez que tienes los fundamentos, es hora de construir el cerebro de tu aplicación: el backend. Aquí es donde se procesa la lógica de negocio, se interactúa con la base de datos y se expone una API para que el frontend la consuma.</p>
+
+            <h3>Node.js: JavaScript en el Servidor</h3>
+            <p>Node.js es un entorno de ejecución de JavaScript que nos permite ejecutar código JS fuera del navegador. Su principal característica es su modelo de I/O (Entrada/Salida) asíncrono y no bloqueante, lo que lo hace muy eficiente para aplicaciones web.</p>
+
+            <h4>Conceptos Clave de Node.js:</h4>
+            <ul>
+                <li><strong>Event Loop:</strong> El corazón de Node.js. Entender cómo maneja operaciones asíncronas sin bloquear el hilo principal es crucial.</li>
+                <li><strong>Módulos Nativos:</strong> Node.js viene con módulos integrados para trabajar con el sistema de archivos (<code>fs</code>), rutas (<code>path</code>), y redes (<code>http</code>).</li>
+                <li><strong>NPM (Node Package Manager):</strong> El gestor de paquetes de Node.js. Aprende a usarlo para instalar, actualizar y gestionar las dependencias de tu proyecto (<code>npm install</code>, <code>npm init</code>, <code>package.json</code>).</li>
+                <li><strong>Variables de Entorno:</strong> Una práctica de seguridad fundamental. Nunca guardes información sensible (como claves de API o credenciales de base de datos) directamente en el código. Usa archivos <code>.env</code> y un paquete como <code>dotenv</code> para cargarlas.</li>
+            </ul>
+
+            <h3>Express.js: El Framework para construir APIs</h3>
+            <p>Express.js es un framework minimalista y flexible para Node.js que simplifica enormemente la creación de servidores web y APIs RESTful. Es el framework web más popular para Node.js.</p>
+
+            <h4>Primeros pasos con Express.js</h4>
+            <p>1. <strong>Inicializa tu proyecto y instala Express:</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">mkdir mi-api
+cd mi-api
+npm init -y
+npm install express</code></pre>
+            </div>
+
+            <p>2. <strong>Crea tu primer servidor (archivo <code>index.js</code>):</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-javascript">const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware para parsear JSON en el cuerpo de las solicitudes
+app.use(express.json());
+
+// Definir una ruta GET de ejemplo
+app.get('/', (req, res) => {
+  res.send('¡Hola, mundo desde Express!');
+});
+
+// Definir una ruta POST de ejemplo
+app.post('/api/data', (req, res) => {
+    console.log(req.body); // El cuerpo de la solicitud JSON
+    res.status(201).json({
+        message: 'Datos recibidos con éxito',
+        data: req.body
+    });
+});
+
+
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
+});</code></pre>
+            </div>
+
+            <p>3. <strong>Ejecuta el servidor:</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">node index.js</code></pre>
+            </div>
+            <p>Ahora puedes visitar <code>http://localhost:3000</code> en tu navegador o enviar una solicitud POST a <code>http://localhost:3000/api/data</code> con un cuerpo JSON usando herramientas como Postman o curl.</p>
+
+            <h4>Conceptos Clave de Express.js:</h4>
+            <ul>
+                <li><strong>Enrutamiento (Routing):</strong> Cómo definir las rutas (endpoints) de tu API para diferentes métodos HTTP (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>) usando <code>app.get()</code>, <code>app.post()</code>, etc.</li>
+                <li><strong>Middleware:</strong> Son funciones que se ejecutan en el medio del ciclo de solicitud-respuesta. Se usan para tareas como validación, autenticación, logging, parseo de cuerpos de solicitud (<code>express.json()</code>), etc.</li>
+                <li><strong>Manejo de Errores:</strong> Implementar un middleware de manejo de errores centralizado para capturar y responder a los errores de manera consistente.</li>
+                <li><strong>API RESTful:</strong> Aprende los principios de diseño de APIs REST, incluyendo el uso correcto de los métodos HTTP, códigos de estado y una estructura de URL consistente para los recursos.</li>
+            </ul>
+
+            <h3>Estructura de un Proyecto Backend</h3>
+            <p>A medida que tu aplicación crece, es importante mantener una estructura organizada. Un patrón común es separar la lógica en diferentes carpetas:</p>
+            <pre class="bg-gray-100 p-4 rounded-md">
+/mi-api
+  /node_modules
+  /controllers     # Lógica de negocio (qué hacer con la solicitud)
+  /models          # Definición de los esquemas de la base de datos
+  /routes          # Definición de las rutas de la API
+  .env             # Variables de entorno (¡no subir a Git!)
+  .gitignore
+  index.js         # Punto de entrada de la aplicación
+  package.json
+</pre>
+            <p>Esta estructura modular hace que el código sea más fácil de mantener, depurar y escalar.</p>
+        </section>
+
+        <!-- MONGODB -->
+        <section id="mongodb" class="content-section">
+            <h2>🗃️ Fase 3: Base de Datos con MongoDB</h2>
+            <p>MongoDB es una base de datos NoSQL, lo que significa que no utiliza el modelo relacional tradicional de tablas, filas y columnas. En su lugar, almacena los datos en documentos flexibles, similares a JSON, dentro de colecciones. Esto la hace muy intuitiva para trabajar con JavaScript.</p>
+
+            <h3>Conceptos Clave de MongoDB</h3>
+            <ul>
+                <li><strong>Documentos:</strong> Son la unidad básica de datos en MongoDB, análogos a un objeto JSON. Tienen una estructura de pares clave-valor.</li>
+                <li><strong>Colecciones:</strong> Son un conjunto de documentos. Serían el equivalente a una tabla en una base de datos SQL.</li>
+                <li><strong>BSON (Binary JSON):</strong> Es una versión binaria y extendida de JSON que MongoDB utiliza para almacenar los datos. Soporta más tipos de datos que JSON.</li>
+                <li><strong>Mongoose:</strong> Es una librería de modelado de datos de objetos (ODM) para MongoDB y Node.js. Simplifica la interacción con la base de datos al proporcionar una capa de abstracción sobre el driver nativo. Permite definir esquemas, validaciones y lógica de negocio a nivel de modelo. Es el estándar de facto en el ecosistema MERN.</li>
+            </ul>
+
+            <h3>Instalación de MongoDB Community Server</h3>
+            <p>La instalación de MongoDB varía según tu sistema operativo. A continuación, encontrarás guías detalladas para Windows, Ubuntu y Arch Linux. Selecciona tu sistema operativo para ver las instrucciones.</p>
+
+            <div class="my-4">
+                <button data-tab="windows" class="tab-btn px-4 py-2 border-b-2 border-transparent">Windows</button>
+                <button data-tab="ubuntu" class="tab-btn px-4 py-2 border-b-2 border-transparent">Ubuntu</button>
+                <button data-tab="arch" class="tab-btn px-4 py-2 border-b-2 border-transparent">Arch Linux</button>
+            </div>
+
+            <div id="windows" class="tab-content">
+                <h4>Instalación en Windows</h4>
+                <ol class="list-decimal pl-6">
+                    <li class="mb-2"><strong>Descargar el instalador:</strong> Ve a la <a href="https://www.mongodb.com/try/download/community" target="_blank">página oficial de MongoDB Community Server</a>. Selecciona la versión "MSI", tu versión de Windows y haz clic en "Download".</li>
+                    <li class="mb-2"><strong>Ejecutar el instalador:</strong> Abre el archivo <code>.msi</code> descargado. Sigue las instrucciones del asistente.</li>
+                    <li class="mb-2"><strong>Seleccionar instalación "Complete":</strong> En la mayoría de los casos, la opción "Complete" es la adecuada.</li>
+                    <li class="mb-2"><strong>Configuración del servicio:</strong> Asegúrate de que la opción "Install MongoDB as a Service" esté marcada. Esto hará que MongoDB se inicie automáticamente con tu sistema. Deja los nombres de directorios por defecto.</li>
+                    <li class="mb-2"><strong>Instalar MongoDB Compass (Opcional pero recomendado):</strong> El instalador te ofrecerá instalar MongoDB Compass. Es una GUI (Interfaz Gráfica de Usuario) muy útil para visualizar y gestionar tu base de datos. Se recomienda instalarla.</li>
+                    <li class="mb-2"><strong>Finalizar la instalación:</strong> Haz clic en "Install" y espera a que el proceso termine.</li>
+                    <li class="mb-2"><strong>Verificación:</strong> Abre el Administrador de Tareas, ve a la pestaña "Servicios" y busca "MongoDB Server". Debería estar en estado "En ejecución". También puedes abrir MongoDB Compass y conectarte a la instancia local por defecto (<code>mongodb://localhost:27017</code>).</li>
+                </ol>
+            </div>
+
+            <div id="ubuntu" class="tab-content" style="display:none;">
+                <h4>Instalación en Ubuntu (20.04/22.04)</h4>
+                <p>MongoDB no está en los repositorios oficiales de Ubuntu, por lo que debemos agregar el repositorio oficial de MongoDB.</p>
+                <ol class="list-decimal pl-6">
+                    <li class="mb-2"><strong>Importar la clave pública de GPG:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo apt-get install gnupg
+curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
+   --dearmor</code></pre>
+                        </div>
+                        <p class="text-sm mt-1">Nota: Revisa la documentación oficial para la clave de la última versión si es necesario.</p>
+                    </li>
+                    <li class="mb-2"><strong>Crear un archivo de lista para MongoDB:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list</code></pre>
+                        </div>
+                    </li>
+                    <li class="mb-2"><strong>Actualizar el índice de paquetes e instalar MongoDB:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo apt-get update
+sudo apt-get install -y mongodb-org</code></pre>
+                        </div>
+                    </li>
+                    <li class="mb-2"><strong>Iniciar y habilitar el servicio de MongoDB:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo systemctl start mongod
+sudo systemctl enable mongod</code></pre>
+                        </div>
+                    </li>
+                    <li class="mb-2"><strong>Verificar el estado del servicio:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo systemctl status mongod</code></pre>
+                        </div>
+                        <p class="mt-1">Deberías ver una salida que indica que el servicio está "active (running)".</p>
+                    </li>
+                </ol>
+            </div>
+
+            <div id="arch" class="tab-content" style="display:none;">
+                <h4>Instalación en Arch Linux</h4>
+                <p>En Arch Linux, la forma más común de instalar MongoDB es a través de los repositorios oficiales de la comunidad.</p>
+                <ol class="list-decimal pl-6">
+                    <li class="mb-2"><strong>Instalar desde los repositorios oficiales:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo pacman -S mongodb</code></pre>
+                        </div>
+                    </li>
+                    <li class="mb-2"><strong>Instalar herramientas adicionales (opcional pero recomendado):</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo pacman -S mongodb-tools</code></pre>
+                        </div>
+                    </li>
+                    <li class="mb-2"><strong>Iniciar y habilitar el servicio de MongoDB:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo systemctl start mongodb.service
+sudo systemctl enable mongodb.service</code></pre>
+                        </div>
+                    </li>
+                    <li class="mb-2"><strong>Verificar el estado del servicio:</strong>
+                        <div class="code-block">
+                            <button class="copy-btn">Copiar</button>
+                            <pre><code class="language-bash">sudo systemctl status mongodb.service</code></pre>
+                        </div>
+                        <p class="mt-1">Deberías ver que el servicio está activo y en ejecución.</p>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Conectando Node.js a MongoDB con Mongoose</h3>
+            <p>Una vez que MongoDB está instalado y en ejecución, puedes conectar tu aplicación de Node.js usando Mongoose.</p>
+
+            <p>1. <strong>Instala Mongoose:</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">npm install mongoose</code></pre>
+            </div>
+
+            <p>2. <strong>Conéctate a la base de datos y define un modelo:</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-javascript">const mongoose = require('mongoose');
+
+// URL de conexión (mongodb://localhost:27017/nombreDeTuDB)
+const dbURI = 'mongodb://localhost:27017/miAppMERN';
+
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Conectado a MongoDB'))
+    .catch(err => console.error('Error al conectar a MongoDB', err));
+
+// Definir un esquema (la estructura de los documentos)
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    age: Number,
+    createdAt: { type: Date, default: Date.now }
+});
+
+// Crear un modelo a partir del esquema
+const User = mongoose.model('User', userSchema);
+
+// Ahora puedes usar el modelo `User` para crear, leer, actualizar y eliminar usuarios.
+module.exports = User;
+</code></pre>
+            </div>
+            <p>Este código establece la conexión con la base de datos y define un "molde" (esquema) para los documentos de usuario. El modelo `User` es la interfaz que usarás en tus controladores para interactuar con la colección de usuarios.</p>
+
+        </section>
+
+        <!-- FRONTEND -->
+        <section id="frontend" class="content-section">
+            <h2>🎨 Fase 4: Frontend con React</h2>
+            <p>React es una biblioteca de JavaScript declarativa, eficiente y flexible para construir interfaces de usuario. Te permite componer UIs complejas a partir de pequeñas piezas aisladas de código llamadas "componentes".</p>
+
+            <h3>Creando tu primera aplicación de React</h3>
+            <p>La forma más sencilla y recomendada de iniciar un proyecto de React es usando una herramienta como Vite.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash"># Instala Vite globalmente (si no lo tienes) o usa npx
+npm create vite@latest mi-app-react -- --template react
+
+cd mi-app-react
+npm install
+npm run dev</code></pre>
+            </div>
+            <p>Esto creará un nuevo proyecto de React con todo lo necesario para empezar y lanzará un servidor de desarrollo en <code>http://localhost:5173</code> (o un puerto similar).</p>
+
+            <h3>Conceptos Fundamentales de React</h3>
+            <ul>
+                <li><strong>Componentes:</strong> Son funciones de JavaScript (o clases) que retornan elementos de React (JSX). Son los bloques de construcción de tu aplicación. Hay dos tipos: componentes de función (los más modernos y recomendados) y componentes de clase.</li>
+                <li><strong>JSX (JavaScript XML):</strong> Es una extensión de la sintaxis de JavaScript que te permite escribir HTML dentro de tu código JavaScript. Facilita la creación y visualización de la estructura de tus componentes.</li>
+                <li><strong>Props (Propiedades):</strong> Son la forma de pasar datos de un componente padre a un componente hijo. Son de solo lectura.</li>
+                <li><strong>State (Estado):</strong> Es un objeto que contiene datos que pueden cambiar con el tiempo dentro de un componente. Cuando el estado de un componente cambia, React vuelve a renderizar ese componente para reflejar los nuevos datos.</li>
+            </ul>
+
+            <h3>Hooks de React</h3>
+            <p>Los Hooks son funciones que te permiten "engancharte" a las características de React desde componentes de función. Son la forma moderna de manejar el estado y los efectos secundarios.</p>
+            <ul>
+                <li><strong><code>useState</code>:</strong> El hook más básico y común. Te permite añadir estado a tus componentes de función. Retorna un valor y una función para actualizarlo.</li>
+                <li><strong><code>useEffect</code>:</strong> Te permite ejecutar "efectos secundarios" en tus componentes. Algunos ejemplos son: hacer peticiones a una API, suscribirse a eventos, o manipular el DOM directamente. Se ejecuta después de cada renderizado.</li>
+                <li><strong><code>useContext</code>:</strong> Permite acceder a un "contexto" global sin tener que pasar props a través de múltiples niveles de componentes (evita el "prop drilling").</li>
+            </ul>
+
+            <h4>Ejemplo: Un componente simple con estado y efecto</h4>
+            <p>Este ejemplo muestra un contador y cómo hacer una petición a una API cuando el componente se monta.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-jsx">import React, { useState, useEffect } from 'react';
+
+function DataFetcher() {
+  // Estado para el contador
+  const [count, setCount] = useState(0);
+  // Estado para guardar los datos de la API
+  const [data, setData] = useState(null);
+  // Estado para manejar el estado de carga
+  const [loading, setLoading] = useState(true);
+
+  // useEffect para hacer la petición a la API una sola vez, cuando el componente se monta
+  useEffect(() => {
+    // Definimos una función asíncrona dentro del efecto
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.example.com/data');
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); // El array de dependencias vacío [] significa que este efecto se ejecuta solo una vez
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Contador y Fetch de Datos&lt;/h1&gt;
+      &lt;p&gt;Has hecho clic {count} veces&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Haz clic aquí
+      &lt;/button&gt;
+
+      &lt;div className="data-section"&gt;
+        &lt;h2&gt;Datos de la API&lt;/h2&gt;
+        {loading ? (
+          &lt;p&gt;Cargando...&lt;/p&gt;
+        ) : (
+          &lt;pre&gt;{JSON.stringify(data, null, 2)}&lt;/pre&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default DataFetcher;
+</code></pre>
+            </div>
+        </section>
+
+        <!-- INTEGRACIÓN -->
+        <section id="integracion" class="content-section">
+            <h2>🧩 Fase 5: Integración y Proyecto Completo</h2>
+            <p>En esta fase, unimos todas las piezas. El frontend de React se comunicará con el backend de Express para realizar operaciones CRUD (Crear, Leer, Actualizar, Borrar) en la base de datos MongoDB. El flujo típico es:</p>
+            <ol>
+                <li>El usuario realiza una acción en la interfaz de React (ej. hace clic en "Guardar Tarea").</li>
+                <li>El componente de React hace una petición HTTP (ej. un <code>POST</code> a <code>/api/tareas</code>) a nuestro servidor Express. Usualmente se usa la API <code>fetch</code> o una librería como <code>axios</code>.</li>
+                <li>La ruta de Express correspondiente recibe la petición.</li>
+                <li>El controlador de Express procesa la petición, interactúa con el modelo de Mongoose para guardar los datos en MongoDB.</li>
+                <li>El servidor Express envía una respuesta al cliente (ej. un JSON con la tarea recién creada y un código de estado 201).</li>
+                <li>El cliente de React recibe la respuesta, actualiza su estado y la interfaz de usuario refleja el cambio.</li>
+            </ol>
+
+            <h3>Configurando la Comunicación (CORS)</h3>
+            <p>Por defecto, los navegadores aplican la "Same-Origin Policy", que impide que una página web (ej. <code>http://localhost:5173</code>) haga peticiones a un dominio diferente (ej. <code>http://localhost:3000</code>). Para permitir esta comunicación en desarrollo, necesitas habilitar CORS (Cross-Origin Resource Sharing) en tu backend de Express.</p>
+
+            <p>1. <strong>Instala el paquete <code>cors</code>:</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash"># En la carpeta de tu backend
+npm install cors</code></pre>
+            </div>
+
+            <p>2. <strong>Úsalo como middleware en tu archivo principal del servidor (<code>index.js</code>):</strong></p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-javascript">const express = require('express');
+const cors = require('cors'); // Importar cors
+const app = express();
+
+// Opciones de CORS (en producción, sé más restrictivo)
+const corsOptions = {
+  origin: 'http://localhost:5173', // La URL de tu app de React
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions)); // Usar el middleware de cors
+app.use(express.json());
+
+// ... resto de tus rutas y configuración ...
+
+app.listen(3000, () => {
+  console.log('Servidor escuchando en el puerto 3000');
+});
+</code></pre>
+            </div>
+
+            <h3>Ejemplo: Obtener datos del Backend en React</h3>
+            <p>Supongamos que tu backend tiene una ruta <code>GET /api/users</code> que devuelve una lista de usuarios. Así es como la consumirías desde un componente de React:</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-jsx">import React, { useState, useEffect } from 'react';
+
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        // La URL completa de tu endpoint del backend
+        const response = await fetch('http://localhost:3000/api/users');
+        if (!response.ok) {
+          throw new Error('La respuesta de la red no fue exitosa');
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  if (error) {
+    return &lt;div&gt;Error: {error}&lt;/div&gt;;
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Lista de Usuarios&lt;/h1&gt;
+      &lt;ul&gt;
+        {users.map(user => (
+          &lt;li key={user._id}&gt;{user.name} - {user.email}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default UserList;
+</code></pre>
+            </div>
+            <h3>Proyecto de Ejemplo: Lista de Tareas</h3>
+            <p>Construir una aplicación de lista de tareas (To-Do list) es un excelente proyecto para solidificar tus conocimientos MERN.</p>
+            <ul>
+                <li><strong>Backend (Express/MongoDB):</strong>
+                    <ul>
+                        <li>Modelo <code>Task</code> con campos como <code>title</code> (String), <code>description</code> (String), <code>completed</code> (Boolean).</li>
+                        <li>API REST con endpoints para:
+                            <ul>
+                                <li><code>GET /api/tasks</code> - Obtener todas las tareas.</li>
+                                <li><code>POST /api/tasks</code> - Crear una nueva tarea.</li>
+                                <li><code>PUT /api/tasks/:id</code> - Actualizar una tarea (marcarla como completada).</li>
+                                <li><code>DELETE /api/tasks/:id</code> - Eliminar una tarea.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Frontend (React):</strong>
+                    <ul>
+                        <li>Un componente para mostrar la lista de tareas.</li>
+                        <li>Un formulario para añadir nuevas tareas.</li>
+                        <li>Botones para marcar tareas como completadas y para eliminarlas.</li>
+                        <li>Estado para gestionar la lista de tareas, actualizándola después de cada operación.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Este proyecto te forzará a manejar el estado del frontend, la comunicación con la API, y las operaciones de la base de datos, cubriendo el ciclo completo de desarrollo MERN.</p>
+        </section>
+
+        <!-- CIBERSEGURIDAD -->
+        <section id="ciberseguridad" class="content-section">
+            <h2>🛡️ Fase 6: Fundamentos de Ciberseguridad</h2>
+            <p>Escribir código funcional es solo la mitad del trabajo. Como desarrollador, tienes la responsabilidad de construir aplicaciones seguras. Ignorar la seguridad puede tener consecuencias graves. Aquí tienes algunas prácticas esenciales para aplicaciones MERN, basadas en las vulnerabilidades más comunes (como las del <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a>).</p>
+
+            <h3>1. Validación y Saneamiento de Entradas</h3>
+            <p><strong>Nunca confíes en los datos que vienen del cliente.</strong> Siempre valida y sanea cualquier dato que recibas en tu backend antes de procesarlo o guardarlo en la base de datos. Esto previene ataques de inyección (NoSQL Injection, XSS).</p>
+            <p><strong>Herramienta recomendada:</strong> <code>express-validator</code>.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">npm install express-validator</code></pre>
+            </div>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-javascript">// En tu archivo de rutas
+const { body, validationResult } = require('express-validator');
+
+router.post(
+  '/register',
+  // Reglas de validación y saneamiento
+  body('email').isEmail().normalizeEmail(),
+  body('password').isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 8 caracteres'),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    // Si la validación pasa, continúa con la lógica de registro
+    // ...
+  }
+);
+</code></pre>
+            </div>
+            <p>Adicionalmente, usa los esquemas de Mongoose para forzar tipos de datos y establecer validaciones a nivel de base de datos.</p>
+
+            <h3>2. Usar Variables de Entorno</h3>
+            <p>Como se mencionó antes, <strong>NUNCA</strong> guardes credenciales, claves de API, secretos de JWT o cualquier información sensible directamente en tu código. Usa un archivo <code>.env</code> para el desarrollo local y las variables de entorno de tu proveedor de hosting para producción.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash"># .env
+DB_URI=mongodb://...
+JWT_SECRET=un_secreto_muy_largo_y_aleatorio
+</code></pre>
+            </div>
+            <p>Asegúrate de añadir <code>.env</code> a tu archivo <code>.gitignore</code>.</p>
+
+            <h3>3. Autenticación y Autorización con JWT</h3>
+            <p>Para proteger rutas y datos, necesitas un sistema de autenticación. JSON Web Tokens (JWT) es un estándar popular para esto.</p>
+            <p><strong>Flujo Básico:</strong></p>
+            <ol>
+                <li>El usuario inicia sesión con su email y contraseña.</li>
+                <li>El servidor verifica las credenciales. Si son correctas, genera un JWT firmado con un secreto (guardado en tus variables de entorno) y se lo envía al cliente.</li>
+                <li>El cliente almacena este token (ej. en una cookie HTTP-Only) y lo envía en la cabecera <code>Authorization</code> de cada petición a rutas protegidas.</li>
+                <li>Un middleware en el servidor verifica la validez del token en cada petición. Si es válido, permite el acceso; si no, lo deniega.</li>
+            </ol>
+            <p><strong>Librerías recomendadas:</strong> <code>jsonwebtoken</code> para generar y verificar tokens, y <code>bcryptjs</code> para hashear las contraseñas antes de guardarlas en la base de datos (<strong>nunca guardes contraseñas en texto plano</strong>).</p>
+
+            <h3>4. Proteger Cabeceras HTTP con Helmet</h3>
+            <p>Helmet.js es un middleware para Express que establece varias cabeceras HTTP de seguridad, protegiendo tu aplicación contra vulnerabilidades web conocidas como Clickjacking, XSS, etc.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">npm install helmet</code></pre>
+            </div>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-javascript">// En index.js
+const helmet = require('helmet');
+app.use(helmet());
+</code></pre>
+            </div>
+
+            <h3>5. Limitar el Rate Limiting</h3>
+            <p>Para prevenir ataques de fuerza bruta o de denegación de servicio (DoS), es una buena práctica limitar cuántas peticiones puede hacer un cliente en un período de tiempo.</p>
+            <p><strong>Herramienta recomendada:</strong> <code>express-rate-limit</code>.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">npm install express-rate-limit</code></pre>
+            </div>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-javascript">// En index.js
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutos
+	max: 100, // Limita cada IP a 100 peticiones por ventana de tiempo
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
+app.use(limiter);
+</code></pre>
+            </div>
+
+            <h3>6. Mantener las Dependencias Actualizadas</h3>
+            <p>Las vulnerabilidades a menudo se descubren en paquetes de terceros. Usa herramientas como <code>npm audit</code> o Snyk para escanear tus dependencias en busca de vulnerabilidades conocidas y actualízalas regularmente.</p>
+            <div class="code-block">
+                <button class="copy-btn">Copiar</button>
+                <pre><code class="language-bash">npm audit
+npm audit fix</code></pre>
+            </div>
+        </section>
+
+        <!-- DESPLIEGUE -->
+        <section id="despliegue" class="content-section">
+            <h2>☁️ Fase 7: Despliegue Gratuito</h2>
+            <p>¡Felicidades por llegar hasta aquí! El último paso es mostrar tu aplicación al mundo. Afortunadamente, hay muchas plataformas excelentes que ofrecen generosos niveles gratuitos para desplegar tus proyectos MERN.</p>
+            <p>El despliegue de una aplicación MERN se divide en tres partes: la base de datos, el backend y el frontend.</p>
+
+            <h3>1. Base de Datos en la Nube: MongoDB Atlas</h3>
+            <p>MongoDB Atlas es el servicio oficial de base de datos en la nube de MongoDB. Ofrece un clúster compartido gratuito (M0) que es perfecto para proyectos pequeños y de aprendizaje.</p>
+            <ol>
+                <li><strong>Crear una cuenta:</strong> Regístrate en <a href="https://www.mongodb.com/cloud/atlas/register" target="_blank">MongoDB Atlas</a>.</li>
+                <li><strong>Crear un clúster gratuito:</strong> Sigue el asistente para crear un nuevo clúster. Elige un proveedor de nube y una región cercana a tus usuarios. Asegúrate de seleccionar el tier "M0 Sandbox" (que es gratuito).</li>
+                <li><strong>Configurar la seguridad:</strong>
+                    <ul>
+                        <li><strong>Acceso a la red (Network Access):</strong> Debes añadir las direcciones IP que podrán conectarse a tu base de datos. Para empezar, puedes añadir <code>0.0.0.0/0</code> (lo que permite el acceso desde cualquier IP), pero para producción es más seguro añadir solo la IP de tu servicio de backend.</li>
+                        <li><strong>Acceso a la base de datos (Database Access):</strong> Crea un usuario y una contraseña para tu base de datos. Guarda estas credenciales de forma segura.</li>
+                    </ul>
+                </li>
+                <li><strong>Obtener la URL de conexión:</strong> En la vista de tu clúster, haz clic en "Connect", selecciona "Drivers", y copia la URL de conexión (connection string). Reemplaza <code>&lt;password&gt;</code> con la contraseña que creaste.</li>
+                <li><strong>Actualizar tu backend:</strong> Usa esta nueva URL de conexión en tu variable de entorno <code>DB_URI</code> en tu servicio de backend.</li>
+            </ol>
+
+            <h3>2. Despliegue del Backend (Node.js/Express)</h3>
+            <p>Plataformas como Render o Heroku son excelentes para alojar servicios de backend.</p>
+            <h4>Usando Render (Recomendado)</h4>
+            <ol>
+                <li><strong>Prepara tu proyecto:</strong> Asegúrate de que tu <code>package.json</code> tenga un script <code>start</code>. Por ejemplo: <code>"start": "node index.js"</code>.</li>
+                <li><strong>Sube tu código a GitHub:</strong> Render se integra directamente con repositorios de GitHub.</li>
+                <li><strong>Crea un "New Web Service" en Render:</strong> Conecta tu cuenta de GitHub y selecciona el repositorio de tu backend.</li>
+                <li><strong>Configura el servicio:</strong>
+                    <ul>
+                        <li><strong>Environment:</strong> Node.</li>
+                        <li><strong>Build Command:</strong> <code>npm install</code>.</li>
+                        <li><strong>Start Command:</strong> <code>npm start</code>.</li>
+                    </ul>
+                </li>
+                <li><strong>Añade las variables de entorno:</strong> En la sección "Environment", añade todas tus variables de entorno (<code>DB_URI</code>, <code>JWT_SECRET</code>, etc.). <strong>No las guardes en tu código.</strong></li>
+                <li><strong>Despliega:</strong> Haz clic en "Create Web Service". Render construirá y desplegará tu aplicación. Te proporcionará una URL pública para tu API.</li>
+            </ol>
+
+            <h3>3. Despliegue del Frontend (React)</h3>
+            <p>Para aplicaciones de frontend estáticas como las de React, Vercel y Netlify son las mejores opciones. Son increíblemente rápidos y fáciles de usar.</p>
+            <h4>Usando Vercel (Recomendado)</h4>
+            <ol>
+                <li><strong>Prepara tu proyecto:</strong> Asegúrate de que tu código de React haga las peticiones a la URL pública de tu backend desplegado en Render (puedes usar una variable de entorno como <code>VITE_API_URL</code>).</li>
+                <li><strong>Sube tu código a GitHub:</strong> Vercel también se integra con GitHub.</li>
+                <li><strong>Importa tu proyecto en Vercel:</strong> Inicia sesión en Vercel con tu cuenta de GitHub, haz clic en "Add New... Project" y selecciona tu repositorio de frontend.</li>
+                <li><strong>Configura el proyecto:</strong> Vercel detectará automáticamente que es un proyecto de React (creado con Vite o Create React App) y configurará los comandos de construcción y el directorio de salida por ti.</li>
+                <li><strong>Añade las variables de entorno:</strong> Si necesitas variables de entorno en tu frontend (como la URL de la API), añádelas en la configuración del proyecto. Recuerda que las variables de entorno en Vite deben empezar con <code>VITE_</code> para ser expuestas al cliente.</li>
+                <li><strong>Despliega:</strong> Haz clic en "Deploy". Vercel construirá tu aplicación y la desplegará en su red global (CDN), dándote una URL pública.</li>
+            </ol>
+
+            <p>¡Y eso es todo! Has desplegado con éxito una aplicación MERN completa de forma gratuita y segura. Ahora puedes compartir el enlace de tu aplicación de Vercel con el mundo.</p>
+        </section>
+
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const mainTitle = document.getElementById('main-title');
+
+        const titles = {
+            'introduccion': '🚀 Introducción al Stack MERN',
+            'fundamentos': '🧱 Fase 1: Fundamentos del Desarrollo Web',
+            'backend': '⚙️ Fase 2: Backend con Node.js y Express.js',
+            'mongodb': '🗃️ Fase 3: Base de Datos con MongoDB',
+            'frontend': '🎨 Fase 4: Frontend con React',
+            'integracion': '🧩 Fase 5: Integración y Proyecto Completo',
+            'ciberseguridad': '🛡️ Fase 6: Fundamentos de Ciberseguridad',
+            'despliegue': '☁️ Fase 7: Despliegue Gratuito'
+        };
+
+        function showSection(hash) {
+            const id = hash ? hash.substring(1) : 'introduccion';
+
+            contentSections.forEach(section => {
+                if (section.id === id) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            mainTitle.textContent = titles[id] || 'Bienvenido';
+            document.querySelector('main div.overflow-y-auto').scrollTop = 0;
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                window.location.hash = targetId;
+            });
+        });
+
+        window.addEventListener('hashchange', () => {
+            showSection(window.location.hash);
+        });
+
+        showSection(window.location.hash);
+
+        // Tab functionality for MongoDB section
+        const tabContainer = document.querySelector('#mongodb');
+        if(tabContainer) {
+            const tabButtons = tabContainer.querySelectorAll('.tab-btn');
+            const tabContents = tabContainer.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.style.display = 'block';
+                        } else {
+                            content.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            // Activate first tab by default
+            if(tabButtons.length > 0){
+                tabButtons[0].classList.add('active');
+                tabContents[0].style.display = 'block';
+            }
+        }
+
+        // Copy button functionality for code blocks
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const code = button.nextElementSibling.querySelector('code').innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    button.innerText = 'Copiado!';
+                    setTimeout(() => {
+                        button.innerText = 'Copiar';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Error al copiar texto: ', err);
+                });
+            });
+        });
+
+    });
+</script>
+</body>
+</html>
